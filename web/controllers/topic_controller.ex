@@ -22,4 +22,8 @@ defmodule Discuss.TopicController do
       {:error, changeset} -> render conn, "new.html", changeset: changeset
     end
   end
+
+  def edit(conn, %{"id" => id}) do
+
+  end
 end
