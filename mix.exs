@@ -29,7 +29,9 @@ defmodule Discuss.Mixfile do
         :logger,
         :gettext,
         :phoenix_ecto,
-        :postgrex
+        :postgrex,
+        :ueberauth,
+        :ueberauth_github
       ]
     ]
   end
