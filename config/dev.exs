@@ -42,3 +42,5 @@ config :discuss, Discuss.Repo,
   port: "8900",
   hostname: "localhost",
   pool_size: 10
+
+import_config "ueberauth.dev.exs"
