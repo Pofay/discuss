@@ -1,7 +1,10 @@
 defmodule Discuss.CommentsChannel do
   use Discuss.Web, :channel
 
-  def join() do
+  def join(name, _params, socket) do
+    IO.puts("++++++")
+    IO.puts("#{name} joined")
+    {:ok, %{joined: "Sup"}, socket}
   end
 
 

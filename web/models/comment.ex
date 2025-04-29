@@ -13,4 +13,5 @@ defmodule Discuss.Comment do
     struct
     |> cast(params, [:content])
     |> validate_required([:content])
+  end
 end
