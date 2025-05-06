@@ -14,6 +14,12 @@ const createSocket = (topicId) => {
     .receive('error', (resp) => {
       console.log('Unable to join', resp);
     });
+
+  document.querySelector('button').addEventListener('click', (e) => {
+    const content = document.querySelector('textarea').value;
+
+    channel.push('comments:add', { content: content });
+  });
 };
 
 window.createSocket = createSocket;
