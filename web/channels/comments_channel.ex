@@ -5,12 +5,23 @@ defmodule Discuss.CommentsChannel do
 
   def join("comments:" <> topic_id, _params, socket) do
     topic_id = String.to_integer(topic_id)
-    topic = Repo.get(Topic, topic_id)
 
-    {:ok, %{}, assign(socket, :topic, topic)}
+    topic = Topic
+    |> Repo.get(topic_id)
+    # The preload function is used to load associated data
+    # In this case it loads the comments associated with the topic
+    |> Repo.preload(:comments)
+
+
+    # socket behaves a lot like conn
+    # where you can perform assign(socket, :key, value)
+    # and then access it later with socket.assigns.key
+    {:ok, %{comments: topic.comments}, assign(socket, :topic, topic)}
   end
 
   def handle_in("comments:add", %{"content" => content}, socket) do
+    # Get the topic from the socket assigns
+    # Just like with conn.assigns
     topic = socket.assigns.topic
 
     changeset =
