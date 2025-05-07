@@ -1,7 +1,6 @@
 import { Socket } from 'phoenix';
 
 let socket = new Socket('/socket', { params: { token: window.userToken } });
-let comments = [];
 
 socket.connect();
 
@@ -10,16 +9,14 @@ const createSocket = (topicId) => {
   channel
     .join()
     .receive('ok', (resp) => {
-      comments.push(...resp.comments);
-      renderComments(comments);
+      renderComments(resp.comments);
     })
     .receive('error', (resp) => {
       console.log('Unable to join', resp);
     });
 
   channel.on(`comments:${topicId}:new`, (resp) => {
-    comments.push(resp.comment);
-    renderComments(comments);
+    renderComment(resp.comment);
   });
 
   document.querySelector('button').addEventListener('click', (e) => {
@@ -32,14 +29,23 @@ const createSocket = (topicId) => {
 
 function renderComments(comments) {
   const renderedComments = comments.map((comment) => {
-    return `
-      <li class="collection-item">
-        ${comment.content}
-      </li>
-    `
+    return commentTemplate(comment);
   });
 
   document.querySelector('.collection').innerHTML = renderedComments.join('');
+}
+
+function renderComment(comment) {
+  const renderedComment = commentTemplate(comment);
+  document.querySelector('.collection').innerHTML += renderedComment;
+}
+
+function commentTemplate(comment) {
+  return `
+    <li class="collection-item">
+      ${comment.content}
+    </li>
+  `
 }
 
 window.createSocket = createSocket;
