@@ -3,6 +3,8 @@
 <div class="input-field">
   <textarea id="message" class="materialize-textarea" placeholder="Type your message here..."></textarea>
   <button id="send" class="btn">Add Comment</button>
+  <ul class="collection">
+  </ul>
 </div>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
