@@ -17,7 +17,7 @@ const createSocket = (topicId) => {
       console.log('Unable to join', resp);
     });
 
-  channel.on('comments:added', (resp) => {
+  channel.on(`comments:${topicId}:new`, (resp) => {
     comments.push(resp.comment);
     renderComments(comments);
   });
