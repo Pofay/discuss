@@ -1,6 +1,7 @@
 import { Socket } from 'phoenix';
 
 let socket = new Socket('/socket', { params: { token: window.userToken } });
+let comments = [];
 
 socket.connect();
 
@@ -9,13 +10,20 @@ const createSocket = (topicId) => {
   channel
     .join()
     .receive('ok', (resp) => {
-      renderComments(resp.comments);
+      comments.push(...resp.comments);
+      renderComments(comments);
     })
     .receive('error', (resp) => {
       console.log('Unable to join', resp);
     });
 
+  channel.on('comments:added', (resp) => {
+    comments.push(resp.comment);
+    renderComments(comments);
+  });
+
   document.querySelector('button').addEventListener('click', (e) => {
+    e.preventDefault();
     const content = document.querySelector('textarea').value;
 
     channel.push('comments:add', { content: content });
