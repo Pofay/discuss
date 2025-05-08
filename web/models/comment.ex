@@ -2,7 +2,7 @@ defmodule Discuss.Comment do
   use Discuss.Web, :model
 
   # Only load the content field when encoding to JSON
-  @derive {Poison.Encoder, only: [:content]}
+  @derive {Poison.Encoder, only: [:content, :user]}
 
   schema "comments" do
     field(:content, :string)

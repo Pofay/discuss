@@ -10,7 +10,9 @@ defmodule Discuss.CommentsChannel do
     |> Repo.get(topic_id)
     # The preload function is used to load associated data
     # In this case it loads the comments associated with the topic
-    |> Repo.preload(:comments)
+    # |> Repo.preload(:comments)
+    # This version loads the comments and the user associated with each comment
+    |> Repo.preload(comments: [:user])
 
 
     # socket behaves a lot like conn
@@ -32,6 +34,7 @@ defmodule Discuss.CommentsChannel do
 
     case Repo.insert(changeset) do
       {:ok, comment} ->
+        comment = Repo.preload(comment, :user)
         broadcast!(socket, "comments:#{socket.assigns.topic.id}:new", %{comment: comment})
         {:reply, :ok, socket}
       {:error, _reason} ->
